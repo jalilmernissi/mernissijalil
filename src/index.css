@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+/* ————— Thème Mernissi Jalil : encre, bleu de France, rouge plume, or ————— */
+@theme {
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Instrument Sans", "Segoe UI", Tahoma, sans-serif;
+
+  --color-paper: #f4f6f2;
+  --color-card: #fdfdfa;
+  --color-mist: #e6ebef;
+  --color-ink: #16283e;
+  --color-ink-soft: #43566c;
+  --color-ink-faint: #6c7d91;
+
+  --color-bleu: #1e5aa8;
+  --color-bleu-deep: #174a8c;
+  --color-bleu-tint: #e4edf8;
+  --color-rouge: #d5493a;
+  --color-rouge-deep: #b23a2e;
+  --color-rouge-tint: #fbe9e5;
+  --color-or: #e8a23d;
+  --color-or-deep: #c07f1f;
+  --color-or-tint: #faeed7;
+
+  --color-navy: #10233a;
+  --color-navy-2: #1b3552;
+  --color-navy-3: #24436a;
+
+  --shadow-fiche: 0 1px 2px rgba(22, 40, 62, 0.06), 0 6px 18px -6px rgba(22, 40, 62, 0.14);
+  --shadow-lift: 0 2px 4px rgba(22, 40, 62, 0.08), 0 18px 34px -12px rgba(22, 40, 62, 0.25);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-paper text-ink font-body antialiased;
+  font-feature-settings: "ss01" on;
+}
+
+::selection {
+  background: #fbe3b8;
+  color: #16283e;
+}
+
+/* ————— Fond quadrillé discret (page) ————— */
+.bg-quadrille {
+  background-image:
+    linear-gradient(rgba(30, 90, 168, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 90, 168, 0.045) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+/* ————— Réglure Seyès (cahier d’écolier) avec marge rouge ————— */
+.bg-seyes {
+  background-image:
+    linear-gradient(90deg, transparent 0, transparent 71px, rgba(213, 73, 58, 0.3) 71px, rgba(213, 73, 58, 0.3) 73px, transparent 73px),
+    repeating-linear-gradient(transparent 0, transparent 31px, rgba(30, 90, 168, 0.13) 31px, rgba(30, 90, 168, 0.13) 32px);
+}
+
+/* ————— Grain papier global ————— */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* ————— Révélations au défilement ————— */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.22, 0.9, 0.3, 1), transform 0.7s cubic-bezier(0.22, 0.9, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ————— Titre du hero : lever de rideau ligne à ligne ————— */
+.line-mask {
+  display: block;
+  overflow: hidden;
+}
+.line-mask > span {
+  display: block;
+  transform: translateY(112%);
+  animation: line-rise 0.9s cubic-bezier(0.22, 0.9, 0.28, 1) forwards;
+  animation-delay: var(--line-delay, 0ms);
+}
+@keyframes line-rise {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ————— Soulignement plume qui se dessine ————— */
+.squiggle path {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  animation: draw-line 1.1s 0.9s cubic-bezier(0.5, 0, 0.2, 1) forwards;
+}
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ————— Accents français flottants ————— */
+.float-accent {
+  animation: float-soft 9s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--float-rot, 0deg));
+  }
+  50% {
+    transform: translateY(-16px) rotate(calc(var(--float-rot, 0deg) + 4deg));
+  }
+}
+
+/* ————— Tampon qui tourne légèrement au survol ————— */
+.stamp {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.stamp:hover {
+  transform: rotate(-4deg) scale(1.04);
+}
+
+/* ————— Barre de progression animée ————— */
+.progress-fill {
+  transition: width 0.8s cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+
+/* ————— Accessibilité : focus visible net ————— */
+:focus-visible {
+  outline: 3px solid #e8a23d;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ————— Menus déroulants / accordéons fluides ————— */
+.acc-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+.acc-body.open {
+  grid-template-rows: 1fr;
+}
+.acc-body > div {
+  overflow: hidden;
+}
+
+/* ————— Apparition des modales ————— */
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.modal-in {
+  animation: modal-in 0.32s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+}
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.overlay-in {
+  animation: overlay-in 0.25s ease both;
+}
+
+/* ————— Soulignement de navigation qui se dessine ————— */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -4px;
+  height: 2px;
+  background: #d5493a;
+  transition: right 0.3s cubic-bezier(0.22, 0.9, 0.3, 1);
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  right: 0;
+}
+
+/* ————— Accessibilité : mouvement réduit ————— */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .line-mask > span,
+  .modal-in,
+  .overlay-in {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  .squiggle path {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .float-accent,
+  .stamp,
+  .progress-fill,
+  .acc-body {
+    animation: none !important;
+    transition: none !important;
+  }
+}
