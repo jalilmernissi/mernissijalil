@@ -1,59 +1,10 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { Reveal, SectionHeading } from '../components/ui';
 import { IconBook, IconCheck, IconFolder, IconGlobe, IconLaurel, IconSteps, IconTarget, IconPen, IconRefresh, Feather } from '../components/Icons';
 import { fleLevels } from '../data/fle';
 import { totalLessons } from '../data/troncCommun';
 
 const HERO_IMG = 'https://image.qwenlm.ai/generated-images/a8b34921-e697-4c79-97fe-04bf884626a3/_result.png';
-
-function VisitorCounter() {
-  const [showCounter, setShowCounter] = useState(false);
-
-  useEffect(() => {
-    // Vérifier immédiatement si on est dans un iframe
-    const isInIframe = window.self !== window.top;
-    
-    // Ne charger le script que si on n'est PAS dans un iframe
-    if (!isInIframe) {
-      // Attendre que le DOM soit complètement chargé
-      const timer = setTimeout(() => {
-        try {
-          const script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.src = 'https://counter11.optistats.ovh/private/counter.js?c=4252q1p9xpx4fb9rbqp3b7thu5wgfa91&down=async';
-          script.async = true;
-          document.body.appendChild(script);
-          setShowCounter(true);
-        } catch (error) {
-          console.warn('Impossible de charger le compteur:', error);
-        }
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  return (
-    <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6">
-      <Reveal>
-        <div className="flex justify-center items-center min-h-[60px]">
-          <a href="https://www.compteurdevisite.com" title="compteur" target="_blank" rel="noopener noreferrer">
-            <img 
-              src="https://counter11.optistats.ovh/private/compteurdevisite.php?c=4252q1p9xpx4fb9rbqp3b7thu5wgfa91" 
-              style={{ border: '0' }}
-              title="compteur" 
-              alt="compteur de visites"
-            />
-          </a>
-          {!showCounter && (
-            <div id="sfc4252q1p9xpx4fb9rbqp3b7thu5wgfa91" style={{ display: 'none' }}></div>
-          )}
-        </div>
-      </Reveal>
-    </section>
-  );
-}
 
 const FLOATING = [
   { ch: 'é', cls: 'left-[6%] top-[18%] text-bleu/25 text-6xl', delay: '0s', rot: '-8deg' },
@@ -366,9 +317,6 @@ export function Home() {
           </div>
         </Reveal>
       </section>
-
-      {/* ————— COMPTEUR DE VISITEURS ————— */}
-      <VisitorCounter />
     </div>
   );
 }
